@@ -3,720 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Android User-Agent Generator - Professional Web Tool</title>
+    <title>Android User-Agent Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-        .version-tag {
-            transition: all 0.2s ease;
+        .pool-item {
+            animation: slideIn 0.3s ease-out;
         }
-        .version-tag:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        .loading-spinner {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        .scroll-smooth {
-            scroll-behavior: smooth;
-        }
-        .copy-feedback {
-            animation: copySuccess 2s ease-in-out;
-        }
-        @keyframes copySuccess {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen scroll-smooth">
-    <!-- Header -->
-    <header class="gradient-bg text-white py-6 shadow-lg">
+<body class="bg-gray-100 min-h-screen">
+    <div class="gradient-bg py-6">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-mobile-alt text-3xl"></i>
-                    <div>
-                        <h1 class="text-2xl md:text-3xl font-bold">Android User-Agent Generator</h1>
-                        <p class="text-blue-100 text-sm">Professional Web Tool for Unlimited Unique User Agents</p>
-                    </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <button id="saveConfig" class="glass-effect px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-30 transition-all">
-                        <i class="fas fa-save mr-2"></i>Save Config
-                    </button>
-                    <button id="loadConfig" class="glass-effect px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-30 transition-all">
-                        <i class="fas fa-folder-open mr-2"></i>Load Config
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="container mx-auto px-4 py-8">
-        <div class="grid lg:grid-cols-2 gap-8">
-            <!-- Input Panel -->
-            <div class="space-y-6">
-                <!-- Base User Agent -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-code text-blue-600 mr-3"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Base User Agent</h2>
-                        <div class="ml-auto">
-                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Required</span>
-                        </div>
-                    </div>
-                    <textarea 
-                        id="baseUserAgent" 
-                        placeholder="Enter your base Android user agent here..."
-                        class="w-full h-24 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                        rows="3"
-                    ></textarea>
-                    <div class="mt-2 flex items-center justify-between">
-                        <small class="text-gray-500">Example: Mozilla/5.0 (Linux; Android 11; SM-G991B)...</small>
-                        <button id="loadSample" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                            <i class="fas fa-magic mr-1"></i>Load Sample
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Android Configuration -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fab fa-android text-green-600 mr-3"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Android Configuration</h2>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Android Version</label>
-                            <select id="androidVersion" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Select Version</option>
-                                <option value="15">Android 15</option>
-                                <option value="14">Android 14</option>
-                                <option value="13">Android 13</option>
-                                <option value="12">Android 12</option>
-                                <option value="11">Android 11</option>
-                                <option value="10">Android 10</option>
-                                <option value="9">Android 9</option>
-                                <option value="8.1">Android 8.1</option>
-                                <option value="8.0">Android 8.0</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Build Version</label>
-                            <input 
-                                type="text" 
-                                id="buildVersion" 
-                                placeholder="e.g., TP1A.220624.014"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Facebook Versions Pool -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            <i class="fab fa-facebook text-blue-600 mr-3"></i>
-                            <h2 class="text-xl font-semibold text-gray-800">Facebook App Versions</h2>
-                        </div>
-                        <span id="fbVersionCount" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0 versions</span>
-                    </div>
-                    <div class="flex space-x-2 mb-4">
-                        <input 
-                            type="text" 
-                            id="fbVersionInput" 
-                            placeholder="e.g., 523.0.0.23.106"
-                            class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                        <button id="addFbVersion" class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div id="fbVersions" class="flex flex-wrap gap-2 min-h-[2rem]">
-                        <!-- Facebook versions will be added here -->
-                    </div>
-                </div>
-
-                <!-- Chrome Versions Pool -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            <i class="fab fa-chrome text-yellow-600 mr-3"></i>
-                            <h2 class="text-xl font-semibold text-gray-800">Chrome Versions</h2>
-                        </div>
-                        <span id="chromeVersionCount" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">0 versions</span>
-                    </div>
-                    <div class="flex space-x-2 mb-4">
-                        <input 
-                            type="text" 
-                            id="chromeVersionInput" 
-                            placeholder="e.g., 145.0.5938.153"
-                            class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                        <button id="addChromeVersion" class="bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div id="chromeVersions" class="flex flex-wrap gap-2 min-h-[2rem]">
-                        <!-- Chrome versions will be added here -->
-                    </div>
-                </div>
-
-                <!-- Generation Settings -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-cogs text-purple-600 mr-3"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Generation Settings</h2>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
-                            <input 
-                                type="number" 
-                                id="quantity" 
-                                min="1" 
-                                max="10000" 
-                                value="10"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                        </div>
-                        <div class="flex items-end">
-                            <button id="generateBtn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 font-semibold">
-                                <i class="fas fa-magic mr-2"></i>Generate User Agents
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Results Panel -->
-            <div class="space-y-6">
-                <!-- Progress Indicator -->
-                <div id="progressContainer" class="bg-white rounded-xl shadow-lg p-6 hidden">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-spinner loading-spinner text-blue-600 mr-3"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Generating User Agents...</h2>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div id="progressBar" class="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-                    <div class="mt-2 text-sm text-gray-600 text-center">
-                        <span id="progressText">Starting generation...</span>
-                    </div>
-                </div>
-
-                <!-- Results Display -->
-                <div id="resultsContainer" class="bg-white rounded-xl shadow-lg p-6 hidden">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-list text-green-600 mr-3"></i>
-                            <h2 class="text-xl font-semibold text-gray-800">Generated User Agents</h2>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button id="copyAllBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                                <i class="fas fa-copy mr-2"></i>Copy All
-                            </button>
-                            <button id="downloadBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                                <i class="fas fa-download mr-2"></i>Download
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-4 p-3 bg-gray-50 rounded-lg">
-                        <div class="flex items-center justify-between text-sm text-gray-600">
-                            <span>Total Generated: <span id="totalGenerated" class="font-semibold text-green-600">0</span></span>
-                            <span>Unique: <span id="uniqueCount" class="font-semibold text-blue-600">0</span></span>
-                        </div>
-                    </div>
-                    <div class="max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
-                        <div id="userAgentsList" class="divide-y divide-gray-100">
-                            <!-- Generated user agents will appear here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Instructions -->
-                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-info-circle text-blue-600 mr-3"></i>
-                        <h3 class="text-lg font-semibold text-gray-800">How to Use</h3>
-                    </div>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
-                        <li>Enter a base Android user agent string</li>
-                        <li>Configure Android version and build version</li>
-                        <li>Add Facebook and Chrome app versions to the pools</li>
-                        <li>Set the number of user agents to generate</li>
-                        <li>Click "Generate" to create unique user agents</li>
-                        <li>Copy individual user agents or download all as a file</li>
-                    </ol>
-                    <div class="mt-4 p-3 bg-blue-100 rounded-lg">
-                        <p class="text-sm text-blue-800">
-                            <i class="fas fa-lightbulb mr-2"></i>
-                            <strong>Tip:</strong> Each generated user agent will be unique with randomized versions from your pools while maintaining proper Android user agent format.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <h1 class="text-4xl font-bold text-white text-center mb-2">
+                <i class="fas fa-mobile-alt mr-3"></i>Android User-Agent Generator
+            </h1>
+            <p class="text-white text-center opacity-90">Generate unlimited unique Android user agents with customizable parameters</p>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex items-center">
-            <i class="fas fa-check-circle mr-2"></i>
-            <span id="toastMessage">Success!</span>
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Panel -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+                    <i class="fas fa-cogs mr-2 text-blue-600"></i>Configuration
+                </h2>
+
+                <!-- Base User Agent -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-code mr-1"></i>Base User Agent
+                    </label>
+                    <textarea id="baseUserAgent" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="Enter your base Android user agent string here..."></textarea>
+                </div>
+
+                <!-- Android Version -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fab fa-android mr-1 text-green-600"></i>Android Version
+                    </label>
+                    <input type="text" id="androidVersion" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="e.g., 11, 12, 13, 14, 15">
+                </div>
+
+                <!-- Build Version -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-hammer mr-1 text-orange-600"></i>Build Version
+                    </label>
+                    <input type="text" id="buildVersion" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="e.g., TP1A.220624.014, RKQ1.210614.002">
+                </div>
+
+                <!-- FBAV Versions Pool -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fab fa-facebook mr-1 text-blue-600"></i>FBAV Versions Pool
+                    </label>
+                    <div class="flex mb-2">
+                        <input type="text" id="fbavInput" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                            placeholder="e.g., 523.0.0.23.106">
+                        <button onclick="addFbavVersion()" class="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="fbavPool" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Chrome Versions Pool -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fab fa-chrome mr-1 text-red-600"></i>Chrome Versions Pool
+                    </label>
+                    <div class="flex mb-2">
+                        <input type="text" id="chromeInput" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                            placeholder="e.g., 145.0.5938.153">
+                        <button onclick="addChromeVersion()" class="px-4 py-2 bg-red-600 text-white rounded-r-md hover:bg-red-700 transition-colors">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="chromePool" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-hashtag mr-1 text-purple-600"></i>Quantity to Generate
+                    </label>
+                    <input type="number" id="quantity" min="1" max="10000" value="10" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Generate Button -->
+                <button onclick="generateUserAgents()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-md hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 font-semibold">
+                    <i class="fas fa-magic mr-2"></i>Generate User Agents
+                </button>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800">
+                        <i class="fas fa-list mr-2 text-green-600"></i>Generated User Agents
+                    </h2>
+                    <div class="flex gap-2">
+                        <button onclick="copyAllUserAgents()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm">
+                            <i class="fas fa-copy mr-1"></i>Copy All
+                        </button>
+                        <button onclick="downloadUserAgents()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm">
+                            <i class="fas fa-download mr-1"></i>Download
+                        </button>
+                    </div>
+                </div>
+
+                <div id="output" class="bg-gray-50 border rounded-md p-4 min-h-96 max-h-96 overflow-y-auto">
+                    <p class="text-gray-500 text-center mt-20">
+                        <i class="fas fa-arrow-left mr-2"></i>Configure settings and click "Generate User Agents" to see results
+                    </p>
+                </div>
+
+                <div id="stats" class="mt-4 text-sm text-gray-600 hidden">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <span id="statsText"></span>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        class AndroidUserAgentGenerator {
-            constructor() {
-                this.fbVersions = [];
-                this.chromeVersions = [];
-                this.generatedUserAgents = [];
-                this.initializeEventListeners();
-                this.loadConfiguration();
-                this.loadSampleData();
-            }
+        let fbavVersions = [];
+        let chromeVersions = [];
+        let generatedUserAgents = [];
 
-            initializeEventListeners() {
-                // Sample user agent loader
-                document.getElementById('loadSample').addEventListener('click', () => {
-                    this.loadSampleUserAgent();
-                });
+        // Load saved data on page load
+        window.onload = function() {
+            loadSavedData();
+        };
 
-                // Version pool management
-                document.getElementById('addFbVersion').addEventListener('click', () => {
-                    this.addFacebookVersion();
-                });
-                
-                document.getElementById('addChromeVersion').addEventListener('click', () => {
-                    this.addChromeVersion();
-                });
+        function loadSavedData() {
+            const savedData = JSON.parse(localStorage.getItem('userAgentGeneratorData') || '{}');
+            
+            if (savedData.baseUserAgent) document.getElementById('baseUserAgent').value = savedData.baseUserAgent;
+            if (savedData.androidVersion) document.getElementById('androidVersion').value = savedData.androidVersion;
+            if (savedData.buildVersion) document.getElementById('buildVersion').value = savedData.buildVersion;
+            if (savedData.quantity) document.getElementById('quantity').value = savedData.quantity;
+            
+            fbavVersions = savedData.fbavVersions || [];
+            chromeVersions = savedData.chromeVersions || [];
+            
+            renderPools();
+        }
 
-                // Enter key support for version inputs
-                document.getElementById('fbVersionInput').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.addFacebookVersion();
-                });
-                
-                document.getElementById('chromeVersionInput').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.addChromeVersion();
-                });
+        function saveData() {
+            const data = {
+                baseUserAgent: document.getElementById('baseUserAgent').value,
+                androidVersion: document.getElementById('androidVersion').value,
+                buildVersion: document.getElementById('buildVersion').value,
+                quantity: document.getElementById('quantity').value,
+                fbavVersions: fbavVersions,
+                chromeVersions: chromeVersions
+            };
+            localStorage.setItem('userAgentGeneratorData', JSON.stringify(data));
+        }
 
-                // Generation
-                document.getElementById('generateBtn').addEventListener('click', () => {
-                    this.generateUserAgents();
-                });
-
-                // Results actions
-                document.getElementById('copyAllBtn').addEventListener('click', () => {
-                    this.copyAllUserAgents();
-                });
-                
-                document.getElementById('downloadBtn').addEventListener('click', () => {
-                    this.downloadUserAgents();
-                });
-
-                // Configuration management
-                document.getElementById('saveConfig').addEventListener('click', () => {
-                    this.saveConfiguration();
-                });
-                
-                document.getElementById('loadConfig').addEventListener('click', () => {
-                    this.loadConfiguration();
-                });
-
-                // Auto-save configuration
-                ['baseUserAgent', 'androidVersion', 'buildVersion', 'quantity'].forEach(id => {
-                    document.getElementById(id).addEventListener('input', () => {
-                        this.autoSaveConfiguration();
-                    });
-                });
-            }
-
-            loadSampleUserAgent() {
-                const sampleUA = 'Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.5938.153 Mobile Safari/537.36 [FBAN/FB4A;FBAV/523.0.0.23.106;FBBV/523.0.0.23.106;FBDM/{density=3.0,width=1080,height=2400};FBLC/en_US;FBRV/523.0.0.23.106;FBCR/T-Mobile;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-G991B;FBSV/11;FBOP/1;FBCA/arm64-v8a:;]';
-                document.getElementById('baseUserAgent').value = sampleUA;
-                this.showToast('Sample user agent loaded!');
-            }
-
-            loadSampleData() {
-                // Sample Facebook versions
-                const sampleFbVersions = ['523.0.0.23.106', '589.1.0.21.101', '588.0.0.20.97', '587.0.0.18.95', '585.0.0.16.93'];
-                sampleFbVersions.forEach(version => {
-                    this.fbVersions.push(version);
-                });
-
-                // Sample Chrome versions
-                const sampleChromeVersions = ['145.0.5938.153', '142.0.5993.90', '149.0.6045.134', '144.0.5978.125', '143.0.5956.101'];
-                sampleChromeVersions.forEach(version => {
-                    this.chromeVersions.push(version);
-                });
-
-                this.updateVersionDisplays();
-            }
-
-            addFacebookVersion() {
-                const input = document.getElementById('fbVersionInput');
-                const version = input.value.trim();
-                
-                if (!version) {
-                    this.showToast('Please enter a Facebook version', 'error');
-                    return;
-                }
-
-                if (this.fbVersions.includes(version)) {
-                    this.showToast('Version already exists', 'warning');
-                    return;
-                }
-
-                this.fbVersions.push(version);
+        function addFbavVersion() {
+            const input = document.getElementById('fbavInput');
+            const version = input.value.trim();
+            if (version && !fbavVersions.includes(version)) {
+                fbavVersions.push(version);
                 input.value = '';
-                this.updateVersionDisplays();
-                this.autoSaveConfiguration();
-                this.showToast('Facebook version added!');
-            }
-
-            addChromeVersion() {
-                const input = document.getElementById('chromeVersionInput');
-                const version = input.value.trim();
-                
-                if (!version) {
-                    this.showToast('Please enter a Chrome version', 'error');
-                    return;
-                }
-
-                if (this.chromeVersions.includes(version)) {
-                    this.showToast('Version already exists', 'warning');
-                    return;
-                }
-
-                this.chromeVersions.push(version);
-                input.value = '';
-                this.updateVersionDisplays();
-                this.autoSaveConfiguration();
-                this.showToast('Chrome version added!');
-            }
-
-            removeFacebookVersion(version) {
-                this.fbVersions = this.fbVersions.filter(v => v !== version);
-                this.updateVersionDisplays();
-                this.autoSaveConfiguration();
-                this.showToast('Facebook version removed');
-            }
-
-            removeChromeVersion(version) {
-                this.chromeVersions = this.chromeVersions.filter(v => v !== version);
-                this.updateVersionDisplays();
-                this.autoSaveConfiguration();
-                this.showToast('Chrome version removed');
-            }
-
-            updateVersionDisplays() {
-                // Update Facebook versions display
-                const fbContainer = document.getElementById('fbVersions');
-                fbContainer.innerHTML = this.fbVersions.map(version => `
-                    <span class="version-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium inline-flex items-center">
-                        ${version}
-                        <button onclick="generator.removeFacebookVersion('${version}')" class="ml-2 text-blue-600 hover:text-blue-800">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </span>
-                `).join('');
-
-                // Update Chrome versions display
-                const chromeContainer = document.getElementById('chromeVersions');
-                chromeContainer.innerHTML = this.chromeVersions.map(version => `
-                    <span class="version-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium inline-flex items-center">
-                        ${version}
-                        <button onclick="generator.removeChromeVersion('${version}')" class="ml-2 text-yellow-600 hover:text-yellow-800">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </span>
-                `).join('');
-
-                // Update counters
-                document.getElementById('fbVersionCount').textContent = `${this.fbVersions.length} versions`;
-                document.getElementById('chromeVersionCount').textContent = `${this.chromeVersions.length} versions`;
-            }
-
-            async generateUserAgents() {
-                const baseUA = document.getElementById('baseUserAgent').value.trim();
-                const androidVersion = document.getElementById('androidVersion').value;
-                const buildVersion = document.getElementById('buildVersion').value.trim();
-                const quantity = parseInt(document.getElementById('quantity').value);
-
-                // Validation
-                if (!baseUA) {
-                    this.showToast('Please enter a base user agent', 'error');
-                    return;
-                }
-
-                if (this.fbVersions.length === 0) {
-                    this.showToast('Please add at least one Facebook version', 'error');
-                    return;
-                }
-
-                if (this.chromeVersions.length === 0) {
-                    this.showToast('Please add at least one Chrome version', 'error');
-                    return;
-                }
-
-                if (!quantity || quantity < 1 || quantity > 10000) {
-                    this.showToast('Please enter a valid quantity (1-10000)', 'error');
-                    return;
-                }
-
-                // Show progress
-                this.showProgress();
-                this.generatedUserAgents = [];
-
-                // Generate user agents
-                const userAgents = new Set(); // Use Set to ensure uniqueness
-                let attempts = 0;
-                const maxAttempts = quantity * 10; // Prevent infinite loops
-
-                while (userAgents.size < quantity && attempts < maxAttempts) {
-                    attempts++;
-                    const newUA = this.createUniqueUserAgent(baseUA, androidVersion, buildVersion);
-                    userAgents.add(newUA);
-                    
-                    // Update progress
-                    const progress = (userAgents.size / quantity) * 100;
-                    this.updateProgress(progress, `Generated ${userAgents.size} of ${quantity} user agents...`);
-                    
-                    // Small delay for large batches to prevent UI freezing
-                    if (attempts % 100 === 0) {
-                        await new Promise(resolve => setTimeout(resolve, 1));
-                    }
-                }
-
-                this.generatedUserAgents = Array.from(userAgents);
-                this.hideProgress();
-                this.displayResults();
-                this.showToast(`Successfully generated ${this.generatedUserAgents.length} unique user agents!`);
-            }
-
-            createUniqueUserAgent(baseUA, androidVersion, buildVersion) {
-                let modifiedUA = baseUA;
-
-                // Replace Android version
-                if (androidVersion) {
-                    modifiedUA = modifiedUA.replace(/Android\s+[\d.]+/g, `Android ${androidVersion}`);
-                }
-
-                // Replace build version
-                if (buildVersion) {
-                    modifiedUA = modifiedUA.replace(/;\s*[A-Z0-9]{2,4}[\d.A-Z]+/g, `; ${buildVersion}`);
-                }
-
-                // Replace Chrome version with random one from pool
-                if (this.chromeVersions.length > 0) {
-                    const randomChrome = this.chromeVersions[Math.floor(Math.random() * this.chromeVersions.length)];
-                    modifiedUA = modifiedUA.replace(/Chrome\/[\d.]+/g, `Chrome/${randomChrome}`);
-                }
-
-                // Replace Facebook version with random one from pool
-                if (this.fbVersions.length > 0) {
-                    const randomFb = this.fbVersions[Math.floor(Math.random() * this.fbVersions.length)];
-                    modifiedUA = modifiedUA.replace(/FBAV\/[\d.]+/g, `FBAV/${randomFb}`);
-                    modifiedUA = modifiedUA.replace(/FBBV\/[\d.]+/g, `FBBV/${randomFb}`);
-                    modifiedUA = modifiedUA.replace(/FBRV\/[\d.]+/g, `FBRV/${randomFb}`);
-                }
-
-                // Add some randomization to device model and other identifiers
-                modifiedUA = this.addRandomization(modifiedUA);
-
-                return modifiedUA;
-            }
-
-            addRandomization(ua) {
-                // Add small variations to make each UA more unique
-                const variations = [
-                    () => ua.replace(/width=(\d+)/, (match, p1) => `width=${parseInt(p1) + Math.floor(Math.random() * 200) - 100}`),
-                    () => ua.replace(/height=(\d+)/, (match, p1) => `height=${parseInt(p1) + Math.floor(Math.random() * 200) - 100}`),
-                    () => ua.replace(/density=([\d.]+)/, (match, p1) => `density=${(parseFloat(p1) + Math.random() * 0.5 - 0.25).toFixed(1)}`),
-                ];
-
-                // Apply random variations
-                const numVariations = Math.floor(Math.random() * variations.length) + 1;
-                let modifiedUA = ua;
-                for (let i = 0; i < numVariations; i++) {
-                    const variation = variations[Math.floor(Math.random() * variations.length)];
-                    modifiedUA = variation();
-                }
-
-                return modifiedUA;
-            }
-
-            showProgress() {
-                document.getElementById('progressContainer').classList.remove('hidden');
-                document.getElementById('resultsContainer').classList.add('hidden');
-            }
-
-            updateProgress(percentage, text) {
-                document.getElementById('progressBar').style.width = `${percentage}%`;
-                document.getElementById('progressText').textContent = text;
-            }
-
-            hideProgress() {
-                document.getElementById('progressContainer').classList.add('hidden');
-            }
-
-            displayResults() {
-                const container = document.getElementById('resultsContainer');
-                const listContainer = document.getElementById('userAgentsList');
-                
-                container.classList.remove('hidden');
-                container.classList.add('fade-in');
-                
-                // Update counters
-                document.getElementById('totalGenerated').textContent = this.generatedUserAgents.length;
-                document.getElementById('uniqueCount').textContent = this.generatedUserAgents.length;
-
-                // Display user agents
-                listContainer.innerHTML = this.generatedUserAgents.map((ua, index) => `
-                    <div class="p-4 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="text-xs text-gray-500 mb-1">#${index + 1}</div>
-                                <div class="text-sm font-mono text-gray-800 break-all">${ua}</div>
-                            </div>
-                            <button onclick="generator.copyUserAgent('${ua.replace(/'/g, "\\'")}')" 
-                                    class="ml-4 text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            copyUserAgent(ua) {
-                navigator.clipboard.writeText(ua).then(() => {
-                    this.showToast('User agent copied to clipboard!');
-                });
-            }
-
-            copyAllUserAgents() {
-                const allUA = this.generatedUserAgents.join('\n');
-                navigator.clipboard.writeText(allUA).then(() => {
-                    this.showToast(`${this.generatedUserAgents.length} user agents copied to clipboard!`);
-                });
-            }
-
-            downloadUserAgents() {
-                const content = this.generatedUserAgents.join('\n');
-                const blob = new Blob([content], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `android-user-agents-${new Date().toISOString().split('T')[0]}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                this.showToast('User agents downloaded successfully!');
-            }
-
-            saveConfiguration() {
-                const config = {
-                    baseUserAgent: document.getElementById('baseUserAgent').value,
-                    androidVersion: document.getElementById('androidVersion').value,
-                    buildVersion: document.getElementById('buildVersion').value,
-                    quantity: document.getElementById('quantity').value,
-                    fbVersions: this.fbVersions,
-                    chromeVersions: this.chromeVersions
-                };
-
-                localStorage.setItem('androidUAGeneratorConfig', JSON.stringify(config));
-                this.showToast('Configuration saved successfully!');
-            }
-
-            autoSaveConfiguration() {
-                const config = {
-                    baseUserAgent: document.getElementById('baseUserAgent').value,
-                    androidVersion: document.getElementById('androidVersion').value,
-                    buildVersion: document.getElementById('buildVersion').value,
-                    quantity: document.getElementById('quantity').value,
-                    fbVersions: this.fbVersions,
-                    chromeVersions: this.chromeVersions
-                };
-
-                localStorage.setItem('androidUAGeneratorConfig', JSON.stringify(config));
-            }
-
-            loadConfiguration() {
-                const config = localStorage.getItem('androidUAGeneratorConfig');
-                if (config) {
-                    try {
-                        const parsed = JSON.parse(config);
-                        
-                        if (parsed.baseUserAgent) document.getElementById('baseUserAgent').value = parsed.baseUserAgent;
-                        if (parsed.androidVersion) document.getElementById('androidVersion').value = parsed.androidVersion;
-                        if (parsed.buildVersion) document.getElementById('buildVersion').value = parsed.buildVersion;
-                        if (parsed.quantity) document.getElementById('quantity').value = parsed.quantity;
-                        
-                        if (parsed.fbVersions) {
-                            this.fbVersions = parsed.fbVersions;
-                        }
-                        
-                        if (parsed.chromeVersions) {
-                            this.chromeVersions = parsed.chromeVersions;
-                        }
-                        
-                        this.updateVersionDisplays();
-                        this.showToast('Configuration loaded successfully!');
-                    } catch (e) {
-                        console.error('Error loading configuration:', e);
-                    }
-                }
-            }
-
-            showToast(message, type = 'success') {
-                const toast = document.getElementById('toast');
-                const toastMessage = document.getElementById('toastMessage');
-                
-                toastMessage.textContent = message;
-                
-                // Set color based on type
-                toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
-                    type === 'error' ? 'bg-red-600' : 
-                    type === 'warning' ? 'bg-yellow-600' : 'bg-green-600'
-                } text-white`;
-                
-                // Show toast
-                toast.style.transform = 'translateX(0)';
-                
-                // Hide after 3 seconds
-                setTimeout(() => {
-                    toast.style.transform = 'translateX(100%)';
-                }, 3000);
+                renderPools();
+                saveData();
             }
         }
 
-        // Initialize the generator
-        const generator = new AndroidUserAgentGenerator();
+        function addChromeVersion() {
+            const input = document.getElementById('chromeInput');
+            const version = input.value.trim();
+            if (version && !chromeVersions.includes(version)) {
+                chromeVersions.push(version);
+                input.value = '';
+                renderPools();
+                saveData();
+            }
+        }
+
+        function removeFbavVersion(index) {
+            fbavVersions.splice(index, 1);
+            renderPools();
+            saveData();
+        }
+
+        function removeChromeVersion(index) {
+            chromeVersions.splice(index, 1);
+            renderPools();
+            saveData();
+        }
+
+        function renderPools() {
+            const fbavPool = document.getElementById('fbavPool');
+            const chromePool = document.getElementById('chromePool');
+
+            fbavPool.innerHTML = fbavVersions.map((version, index) => 
+                `<span class="pool-item bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">
+                    ${version}
+                    <button onclick="removeFbavVersion(${index})" class="ml-1 text-blue-600 hover:text-blue-800">×</button>
+                </span>`
+            ).join('');
+
+            chromePool.innerHTML = chromeVersions.map((version, index) => 
+                `<span class="pool-item bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm">
+                    ${version}
+                    <button onclick="removeChromeVersion(${index})" class="ml-1 text-red-600 hover:text-red-800">×</button>
+                </span>`
+            ).join('');
+        }
+
+        function generateUserAgents() {
+            const baseUserAgent = document.getElementById('baseUserAgent').value.trim();
+            const androidVersion = document.getElementById('androidVersion').value.trim();
+            const buildVersion = document.getElementById('buildVersion').value.trim();
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            if (!baseUserAgent) {
+                alert('Please enter a base user agent string.');
+                return;
+            }
+
+            if (!androidVersion && !buildVersion && fbavVersions.length === 0 && chromeVersions.length === 0) {
+                alert('Please configure at least one customization parameter (Android version, Build version, FBAV versions, or Chrome versions).');
+                return;
+            }
+
+            generatedUserAgents = [];
+
+            for (let i = 0; i < quantity; i++) {
+                let userAgent = baseUserAgent;
+
+                // Replace Android version
+                if (androidVersion) {
+                    userAgent = userAgent.replace(/Android\s+[\d.]+/g, `Android ${androidVersion}`);
+                }
+
+                // Replace Build version
+                if (buildVersion) {
+                    userAgent = userAgent.replace(/;\s*wv\)\s*AppleWebKit\/[\d.]+\s*\(KHTML,\s*like\s*Gecko\)\s*Version\/[\d.]+\s*Chrome\/[\d.]+\s*Mobile\s*Safari\/[\d.]+\s*\[FB_IAB\/FB4A;FBAV\/[\d.]+;]/g, 
+                        match => match.replace(/\[FB_IAB\/FB4A;FBAV\/[\d.]+;/, `[FB_IAB/FB4A;FBAV/${getRandomFromArray(fbavVersions) || 'ORIGINAL'};`));
+                    
+                    // Replace build in various patterns
+                    userAgent = userAgent.replace(/;\s*[A-Z0-9]{2,4}[\d.A-Z]+;\s*wv\)/g, `; ${buildVersion}; wv)`);
+                    userAgent = userAgent.replace(/Build\/[A-Z0-9.]+/g, `Build/${buildVersion}`);
+                }
+
+                // Replace FBAV version
+                if (fbavVersions.length > 0) {
+                    const randomFbav = getRandomFromArray(fbavVersions);
+                    userAgent = userAgent.replace(/FBAV\/[\d.]+/g, `FBAV/${randomFbav}`);
+                }
+
+                // Replace Chrome version
+                if (chromeVersions.length > 0) {
+                    const randomChrome = getRandomFromArray(chromeVersions);
+                    userAgent = userAgent.replace(/Chrome\/[\d.]+/g, `Chrome/${randomChrome}`);
+                }
+
+                generatedUserAgents.push(userAgent);
+            }
+
+            displayResults();
+            saveData();
+        }
+
+        function getRandomFromArray(arr) {
+            return arr.length > 0 ? arr[Math.floor(Math.random() * arr.length)] : null;
+        }
+
+        function displayResults() {
+            const output = document.getElementById('output');
+            const stats = document.getElementById('stats');
+            const statsText = document.getElementById('statsText');
+
+            output.innerHTML = generatedUserAgents.map((ua, index) => 
+                `<div class="mb-2 p-2 bg-white border rounded text-sm font-mono break-all">
+                    <span class="text-gray-500">${index + 1}.</span> ${ua}
+                </div>`
+            ).join('');
+
+            statsText.textContent = `Generated ${generatedUserAgents.length} unique user agents`;
+            stats.classList.remove('hidden');
+        }
+
+        function copyAllUserAgents() {
+            if (generatedUserAgents.length === 0) {
+                alert('No user agents to copy. Please generate some first.');
+                return;
+            }
+
+            const text = generatedUserAgents.join('\n');
+            navigator.clipboard.writeText(text).then(() => {
+                alert('All user agents copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy to clipboard. Please try again.');
+            });
+        }
+
+        function downloadUserAgents() {
+            if (generatedUserAgents.length === 0) {
+                alert('No user agents to download. Please generate some first.');
+                return;
+            }
+
+            const text = generatedUserAgents.join('\n');
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `android_user_agents_${new Date().toISOString().slice(0, 10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Auto-save on input changes
+        document.addEventListener('input', saveData);
+
+        // Enter key handlers
+        document.getElementById('fbavInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addFbavVersion();
+        });
+
+        document.getElementById('chromeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addChromeVersion();
+        });
     </script>
 </body>
 </html>
